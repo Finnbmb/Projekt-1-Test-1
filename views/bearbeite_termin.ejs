@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Termin bearbeiten</title>
+    <meta charset="UTF-8">
+    <style>
+        body { font-family: Arial, sans-serif; margin: 2em; }
+        form { max-width: 400px; margin: auto; }
+        label { display: block; margin-top: 1em; }
+        input, textarea, select { width: 100%; padding: 8px; margin-top: 4px; }
+        button { margin-top: 1em; padding: 8px 16px; }
+        .error { color: red; margin-bottom: 1em; }
+    </style>
+</head>
+<body>
+    <h1>Termin bearbeiten</h1>
+    <% if (error) { %>
+      <div class="error"><%= error %></div>
+    <% } %>
+    <form action="/termine/<%= termin.id %>?_method=PUT" method="POST">
+        <label for="titel">Titel:</label>
+        <input type="text" id="titel" name="titel" value="<%= termin.titel %>" required>
+
+        <label for="datum">Datum:</label>
+        <input type="date" id="datum" name="datum" value="<%= termin.datum %>" required>
+
+        <label for="beschreibung">Beschreibung:</label>
+        <textarea id="beschreibung" name="beschreibung"><%= termin.beschreibung %></textarea>
+
+        <label for="prioritaet">Priorität:</label>
+        <select id="prioritaet" name="prioritaet">
+            <option value="Hoch" <%= termin.prioritaet === 'Hoch' ? 'selected' : '' %>>Hoch</option>
+            <option value="Mittel" <%= !termin.prioritaet || termin.prioritaet === 'Mittel' ? 'selected' : '' %>>Mittel</option>
+            <option value="Niedrig" <%= termin.prioritaet === 'Niedrig' ? 'selected' : '' %>>Niedrig</option>
+        </select>
+
+        <label for="wiederholung">Wiederholung:</label>
+        <select id="wiederholung" name="wiederholung">
+            <option value="Keine" <%= !termin.wiederholung || termin.wiederholung === 'Keine' ? 'selected' : '' %>>Keine</option>
+            <option value="Täglich" <%= termin.wiederholung === 'Täglich' ? 'selected' : '' %>>Täglich</option>
+            <option value="Wöchentlich" <%= termin.wiederholung === 'Wöchentlich' ? 'selected' : '' %>>Wöchentlich</option>
+            <option value="Monatlich" <%= termin.wiederholung === 'Monatlich' ? 'selected' : '' %>>Monatlich</option>
+        </select>
+
+        <button type="submit">Speichern</button>
+    </form>
+</body>
+</html>

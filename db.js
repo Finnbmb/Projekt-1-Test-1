@@ -6,7 +6,9 @@ db.serialize(() => {
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     titel TEXT NOT NULL,
     datum TEXT NOT NULL,
-    beschreibung TEXT
+    beschreibung TEXT,
+    prioritaet TEXT DEFAULT 'Mittel',
+    wiederholung TEXT DEFAULT 'Keine'
   )`);
 });
 

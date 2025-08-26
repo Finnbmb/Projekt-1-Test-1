@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Termine</title>
+    <meta charset="UTF-8">
+    <style>
+        body { font-family: Arial, sans-serif; margin: 2em; }
+        table { border-collapse: collapse; width: 100%; }
+        th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
+        th { background-color: #f2f2f2; }
+        form { display: inline; }
+        a, button { margin-right: 8px; }
+        .search-form { margin-bottom: 1em; }
+        .feiertag { background-color: #ffe4e1; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <h1>Alle Termine</h1>
+    <a href="/termine/neu">Neuen Termin hinzufügen</a>
+    <form class="search-form" action="/termine" method="GET">
+        <input type="text" name="q" placeholder="Suche nach Titel oder Datum" value="<%= typeof q !== 'undefined' ? q : '' %>">
+        <button type="submit">Suchen</button>
+    </form>
+    <h2>Feiertage <%= new Date().getFullYear() %></h2>
+    <table>
+        <tr>
+            <th>Titel</th>
+            <th>Datum</th>
+        </tr>
+        <% if (typeof feiertage !== 'undefined' && feiertage) { feiertage.forEach(function(f) { %>
+        <tr class="feiertag">
+            <td><%= f.titel %></td>
+            <td><%= f.datum %></td>
+        </tr>
+        <% }); } %>
+    </table>
+    <h2>Termine</h2>
+    <table>
+        <tr>
+            <th>Titel</th>
+            <th>Datum</th>
+            <th>Beschreibung</th>
+            <th>Priorität</th>
+            <th>Wiederholung</th>
+            <th>Aktionen</th>
+        </tr>
+        <% termine.forEach(function(termin) { %>
+        <tr>
+            <td><%= termin.titel %></td>
+            <td><%= termin.datum %></td>
+            <td><%= termin.beschreibung %></td>
+            <td><%= termin.prioritaet %></td>
+            <td><%= termin.wiederholung %></td>
+            <td>
+                <a href="/termine/<%= termin.id %>/bearbeiten">Bearbeiten</a>
+                <form action="/termine/<%= termin.id %>?_method=DELETE" method="POST" onsubmit="return confirm('Diesen Termin wirklich löschen?');">
+                    <button type="submit">Löschen</button>
+                </form>
+            </td>
+        </tr>
+        <% }); %>
+    </table>
+</body>
+</html>
