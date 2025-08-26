@@ -119,3 +119,12 @@ In diesem Schritt wurde die Feiertagsintegration ergänzt:
 - Feiertage sind optisch hervorgehoben und helfen bei der Terminplanung.
 
 Damit werden Feiertage bei der Terminverwaltung berücksichtigt.
+
+## Schritt 14: Export im iCal-Format
+
+In diesem Schritt wurde die Export-Funktion für iCal ergänzt:
+
+- Über den Link in der Übersicht können alle Termine als iCal-Datei exportiert und in andere Kalender importiert werden.
+- Die Route `/termine/export` erstellt eine iCal-Datei mit allen Terminen und bietet sie zum Download an.
+
+Damit ist die Integration externer Kalenderlösungen möglich.

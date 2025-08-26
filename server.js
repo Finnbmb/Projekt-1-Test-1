@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 const db = require('./db');
 const methodOverride = require('method-override');
+const { ICalCalendar } = require('ical-generator');
 
 app.set('view engine', 'ejs');
 app.use(express.urlencoded({ extended: true }));
@@ -123,6 +124,28 @@ app.delete('/termine/:id', (req, res) => {
       return res.status(500).send('Fehler beim Löschen des Termins');
     }
     res.redirect('/termine');
+  });
+});
+
+// Route: Termine als iCal exportieren
+app.get('/termine/export', (req, res) => {
+  db.all('SELECT * FROM termine', [], (err, rows) => {
+    if (err) {
+      return res.status(500).send('Fehler beim Exportieren der Termine');
+    }
+    const cal = new ICalCalendar({ name: 'Terminkalender Export' });
+    rows.forEach(termin => {
+      cal.createEvent({
+        start: new Date(termin.datum),
+        end: new Date(termin.datum),
+        summary: termin.titel,
+        description: termin.beschreibung || '',
+        categories: [{ name: termin.prioritaet || 'Mittel' }],
+      });
+    });
+    res.setHeader('Content-Type', 'text/calendar');
+    res.setHeader('Content-Disposition', 'attachment; filename="termine.ics"');
+    res.send(cal.toString());
   });
 });
 
